@@ -1,0 +1,153 @@
+CREATE TABLE schoolEntity (
+    id TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    academicYear TEXT NOT NULL,
+    principalName TEXT NOT NULL,
+    address TEXT NOT NULL,
+    logoPath TEXT
+);
+
+CREATE TABLE academicClassEntity (
+    id TEXT NOT NULL PRIMARY KEY,
+    schoolId TEXT NOT NULL,
+    name TEXT NOT NULL,
+    level TEXT,
+    classTeacher TEXT
+);
+
+CREATE TABLE studentEntity (
+    id TEXT NOT NULL PRIMARY KEY,
+    schoolId TEXT NOT NULL,
+    studentName TEXT NOT NULL,
+    className TEXT NOT NULL,
+    gender TEXT NOT NULL,
+    dateOfBirth TEXT,
+    parentName TEXT,
+    parentTel TEXT
+);
+
+CREATE TABLE subjectEntity (
+    id TEXT NOT NULL PRIMARY KEY,
+    schoolId TEXT NOT NULL,
+    name TEXT NOT NULL,
+    code TEXT NOT NULL,
+    coefficient INTEGER AS kotlin.Int NOT NULL DEFAULT 1
+);
+
+CREATE TABLE subjectAllocationEntity (
+    id TEXT NOT NULL PRIMARY KEY,
+    schoolId TEXT NOT NULL,
+    subjectId TEXT NOT NULL,
+    classId TEXT NOT NULL
+);
+
+CREATE TABLE examSessionEntity (
+    id TEXT NOT NULL PRIMARY KEY,
+    schoolId TEXT NOT NULL,
+    name TEXT NOT NULL,
+    academicYear TEXT NOT NULL,
+    date TEXT NOT NULL
+);
+
+CREATE TABLE markEntity (
+    id TEXT NOT NULL PRIMARY KEY,
+    schoolId TEXT NOT NULL,
+    studentId TEXT NOT NULL,
+    subjectId TEXT NOT NULL,
+    examSessionId TEXT NOT NULL,
+    score REAL NOT NULL,
+    maxScore REAL NOT NULL DEFAULT 20.0,
+    remarks TEXT
+);
+
+-- School Queries
+insertSchool:
+INSERT OR REPLACE INTO schoolEntity(id, name, academicYear, principalName, address, logoPath)
+VALUES (?, ?, ?, ?, ?, ?);
+
+getSchool:
+SELECT * FROM schoolEntity LIMIT 1;
+
+selectAllSchools:
+SELECT * FROM schoolEntity;
+
+deleteSchool:
+DELETE FROM schoolEntity WHERE id = ?;
+
+deleteClassesBySchool:
+DELETE FROM academicClassEntity WHERE schoolId = ?;
+
+deleteStudentsBySchool:
+DELETE FROM studentEntity WHERE schoolId = ?;
+
+deleteSubjectsBySchool:
+DELETE FROM subjectEntity WHERE schoolId = ?;
+
+deleteAllocationsBySchool:
+DELETE FROM subjectAllocationEntity WHERE schoolId = ?;
+
+deleteSessionsBySchool:
+DELETE FROM examSessionEntity WHERE schoolId = ?;
+
+deleteMarksBySchool:
+DELETE FROM markEntity WHERE schoolId = ?;
+
+-- Class Queries
+insertClass:
+INSERT OR REPLACE INTO academicClassEntity(id, schoolId, name, level, classTeacher)
+VALUES (?, ?, ?, ?, ?);
+
+selectAllClasses:
+SELECT * FROM academicClassEntity WHERE schoolId = ?;
+
+deleteClass:
+DELETE FROM academicClassEntity WHERE id = ?;
+
+-- Student Queries
+insertStudent:
+INSERT OR REPLACE INTO studentEntity(id, schoolId, studentName, className, gender, dateOfBirth, parentName, parentTel)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+selectAllStudents:
+SELECT * FROM studentEntity WHERE schoolId = ?;
+
+deleteStudent:
+DELETE FROM studentEntity WHERE id = ?;
+
+-- Subject Queries
+insertSubject:
+INSERT OR REPLACE INTO subjectEntity(id, schoolId, name, code, coefficient)
+VALUES (?, ?, ?, ?, ?);
+
+selectAllSubjects:
+SELECT * FROM subjectEntity WHERE schoolId = ?;
+
+deleteSubject:
+DELETE FROM subjectEntity WHERE id = ?;
+
+-- Allocation Queries
+insertAllocation:
+INSERT OR REPLACE INTO subjectAllocationEntity(id, schoolId, subjectId, classId)
+VALUES (?, ?, ?, ?);
+
+selectAllAllocations:
+SELECT * FROM subjectAllocationEntity WHERE schoolId = ?;
+
+deleteAllocationsForSubject:
+DELETE FROM subjectAllocationEntity WHERE subjectId = ?;
+
+-- Exam Session Queries
+insertSession:
+INSERT OR REPLACE INTO examSessionEntity(id, schoolId, name, academicYear, date)
+VALUES (?, ?, ?, ?, ?);
+
+selectAllSessions:
+SELECT * FROM examSessionEntity WHERE schoolId = ?;
+
+-- Mark Queries
+insertMark:
+INSERT OR REPLACE INTO markEntity(id, schoolId, studentId, subjectId, examSessionId, score, maxScore, remarks)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+selectAllMarks:
+SELECT * FROM markEntity WHERE schoolId = ?;
