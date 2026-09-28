@@ -20,9 +20,18 @@ compose.desktop {
         mainClass = "com.classgrid.main.MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            targetFormats(TargetFormat.Msi, TargetFormat.Exe)
             packageName = "com.classgrid.main"
             packageVersion = "1.0.0"
+
+            windows {
+                // MUST be a valid, fixed UUID so upgrades replace old installs correctly
+                upgradeUuid = "171c3ad1-bc3a-4942-985c-8f1e35f01a3a"
+                shortcut = true
+                menuGroup = "EbongBilly"
+                dirChooser = true
+                iconFile.set(project.file("src/main/resources/icon.ico")) // Optional
+            }
         }
     }
 }
